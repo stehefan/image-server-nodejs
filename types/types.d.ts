@@ -10,11 +10,6 @@ export type AccessibleDimension = Dimension & {
 
 export type Image = {
     id: number;
+    objectId: string;
     dimensions?: AccessibleDimension[];
-}
-
-export type ServerSideError = {
-    status: number;
-    type?: ErrorType;
-    msg?: string;
 }

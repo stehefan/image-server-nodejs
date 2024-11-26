@@ -12,6 +12,7 @@ export const dimensions = pgTable('dimensions', {
 
 export const images = pgTable('images', {
     id: serial('id').primaryKey(),
+    objectId: text('object_id').notNull(),
     createdAt: timestamp('created_at', {withTimezone: true}).notNull().defaultNow(),
 });
 

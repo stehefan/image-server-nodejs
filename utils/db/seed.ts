@@ -1,14 +1,23 @@
 import 'dotenv/config';
 import {drizzle} from 'drizzle-orm/node-postgres';
-import * as schema from './schema';
-import {seed} from "drizzle-seed";
+import {reset, seed} from "drizzle-seed";
+import * as schema from '../../src/config/schema';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
 async function main() {
+    const randomObjectIds: string[] = []
+    for (let i = 0; i < 100; i++) {
+        randomObjectIds.push(crypto.randomUUID().toString());
+    }
+
+    await reset(db, schema);
     await seed(db, schema).refine((funcs) => ({
             images: {
                 count: 100,
+                columns: {
+                    objectId: funcs.valuesFromArray({values: randomObjectIds})
+                },
                 with: {
                     dimensions: 10
                 }
