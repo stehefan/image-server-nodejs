@@ -9,6 +9,7 @@ pnpm-lock.yaml
 
 # production
 /build
+/dist
 
 .nvmrc
 
