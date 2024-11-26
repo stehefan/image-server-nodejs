@@ -41,49 +41,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const schema = __importStar(require("./db/schema"));
-const pglite_1 = require("drizzle-orm/pglite");
-dotenv_1.default.config();
-const app = (0, express_1.default)();
-const port = process.env.PORT || 3000;
-const db = (0, pglite_1.drizzle)({ schema });
-app.get("/image/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { method, params } = req;
-    const { id } = params;
-    let imageId = Number.parseInt(id);
-    if (Number.isNaN(imageId)) {
-        res
-            .status(400)
-            .send({
-            status: 400,
-            msg: 'id needs to be a number'
-        });
-        return;
-    }
-    switch (method) {
-        case "GET":
-            let result = yield db.query.images.findFirst({
+require("dotenv/config");
+const node_postgres_1 = require("drizzle-orm/node-postgres");
+const schema = __importStar(require("./schema"));
+const drizzle_seed_1 = require("drizzle-seed");
+const db = (0, node_postgres_1.drizzle)(process.env.DATABASE_URL);
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield (0, drizzle_seed_1.seed)(db, schema).refine((funcs) => ({
+            images: {
+                count: 100,
                 with: {
-                    dimensions: true
-                },
-            });
-            if (result) {
-                res.status(404).send();
+                    dimensions: 10
+                }
+            },
+            dimensions: {
+                columns: {
+                    width: funcs.int({ minValue: 1024, maxValue: 2048, isUnique: false }),
+                    height: funcs.int({ minValue: 768, maxValue: 1536, isUnique: false }),
+                    name: funcs.string({ isUnique: false }),
+                    href: funcs.string({ isUnique: false })
+                }
             }
-            else {
-                res.send(result);
-            }
-            break;
-        default:
-            res.status(405).send();
-    }
-}));
-app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+        }));
+    });
+}
+main();
