@@ -14,7 +14,7 @@ pnpm-lock.yaml
 .nvmrc
 
 # local env files
-.env
+.env*
 
 # vercel
 .vercel
