@@ -1,5 +1,8 @@
 {
-  "watch": ["src"],
-  "ext": "ts",
-  "exec": "concurrently 'npx tsc --watch' 'ts-node api/app.ts'"
+  "watch": [
+    "src"
+  ],
+  "execMap": {
+    "ts": "ts-node"
+  }
 }
