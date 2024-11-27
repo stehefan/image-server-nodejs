@@ -15,16 +15,20 @@ async function main() {
         }).returning();
 
         const createdImage = queryResult[0];
-        const width =faker.number.int({ min: 1024, max: 2048 });
-        const height = faker.number.int({ min: 768, max: 1536 });
+        const numberOfDimensions = Math.floor(Math.random() * 5);
 
-        await db.insert(schema.dimensions).values({
-            imageId: createdImage.id,
-            width: width,
-            height: height,
-            name: faker.word.sample(),
-            href: `https://picsum.photos/seed/${createdImage.objectId}/${width}/${height}`,
-        });
+        for (let j = 0; j < numberOfDimensions; j++) {
+            const width = faker.number.int({min: 1024, max: 2048});
+            const height = faker.number.int({min: 768, max: 1536});
+
+            await db.insert(schema.dimensions).values({
+                imageId: createdImage.id,
+                width: width,
+                height: height,
+                name: faker.word.sample(),
+                href: `https://picsum.photos/seed/${createdImage.objectId}/${width}/${height}`,
+            });
+        }
     }
 }
 main();
