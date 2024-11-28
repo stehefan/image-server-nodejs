@@ -1,4 +1,5 @@
 export type Dimension = {
+    id: number;
     name: string;
     width: number;
     height: number;
