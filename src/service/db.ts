@@ -4,7 +4,7 @@ import {Image} from "../../types/types";
 import {dbClient} from "../config/client";
 
 export const getImagesFromDatabase = async (): Promise<Image[] | undefined> => {
-    let result = await dbClient.query.images.findMany({
+    const result = await dbClient.query.images.findMany({
         with: {
             dimensions: true
         },
@@ -14,7 +14,7 @@ export const getImagesFromDatabase = async (): Promise<Image[] | undefined> => {
 }
 
 export const getImageFromDatabase = async (id: number): Promise<Image | undefined> => {
-     let result = await dbClient.query.images.findFirst({
+     const result = await dbClient.query.images.findFirst({
         where: eq(schema.images.id, id),
         with: {
             dimensions: true

@@ -1,9 +1,12 @@
 import {NextFunction, Request, Response} from "express";
 
+ 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const defaultNotFoundHandler = (_req: Request, _res: Response, _next: NextFunction) => {
     throw new CustomError('page not found', 404);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const defaultErrorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof CustomError) {
         res.status(err.statusCode);
